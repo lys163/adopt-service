@@ -1,5 +1,7 @@
 package com.adopt.adopt_service.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,8 +33,8 @@ public class SecurityConfig {
                 .cors(c->{
                     CorsConfigurationSource source = request->{
                         CorsConfiguration config = new CorsConfiguration();
-                        config.addAllowedOrigin("http://localhost:3000");
-                        config.addAllowedMethod("GET, POST, PUT, DELETE, OPTIONS");
+                        config.addAllowedOrigin("http://localhost:5173");
+                        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                         config.setAllowCredentials(true);
                         return config;
                     };
