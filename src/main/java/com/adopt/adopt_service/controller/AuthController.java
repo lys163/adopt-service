@@ -47,9 +47,9 @@ public class AuthController {
 
             HttpSession session = httpRequest.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-            session.setAttribute("SPRINGA_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            // session.setAttribute("SPRINGA_SECURITY_CONTEXT", SecurityContextHolder.getContext());
             // session.setMaxInactiveInterval();
-
+            
             return ResponseEntity.ok("로그인 성공");
         }catch(BadCredentialsException e){
             log.info("로그인 시도: email={}, pw={}", request.email(), request.pw());
