@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -80,5 +81,13 @@ public class AuthController {
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok("로그아웃 성공");
     }
-    
+    @GetMapping("/check-login")
+    public ResponseEntity<?> checkLogin(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    if (session != null && session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+        return ResponseEntity.ok("로그인됨");
+    }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인되지 않음");
+    }
+
 }
