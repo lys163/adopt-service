@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name="board")
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name="board")
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

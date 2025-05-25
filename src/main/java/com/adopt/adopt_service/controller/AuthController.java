@@ -70,7 +70,8 @@ public class AuthController {
         request.pn(),
         request.age(),
         request.addr(),
-        "ROLE_USER");
+        "ROLE_USER"
+        );
         userRepository.save(user);
         return ResponseEntity.ok("회원가입 성공");
     }
