@@ -63,7 +63,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 이메일입니다.");
         }
         User user=new User(
-        null,
         request.email(),
         passwordEncoder.encode(request.pw()),
         request.name(),

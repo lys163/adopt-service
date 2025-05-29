@@ -16,10 +16,12 @@ import com.adopt.adopt_service.dto.BoardRequest;
 import com.adopt.adopt_service.dto.BoardResponse;
 import com.adopt.adopt_service.service.BoardService;
 
-
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

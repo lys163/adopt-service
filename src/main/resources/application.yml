@@ -19,3 +19,10 @@ logging:
         org.springframework.security: DEBUG
         com.adopt: DEBUG
         root: INFO
+server:
+    port: 8080
+springdoc:
+    swagger-ui:
+        csrf:
+            enabled: false
+        persistAuthorization: true

@@ -34,6 +34,7 @@ public class SecurityConfig {
                     CorsConfigurationSource source = request->{
                         CorsConfiguration config = new CorsConfiguration();
                         config.addAllowedOrigin("http://localhost:5173");
+                        config.addAllowedOrigin("http://localhost:8080");
                         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                         config.setAllowCredentials(true);
                         return config;
@@ -45,6 +46,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/board/**").permitAll()
+                        .requestMatchers("/api/animals/**").permitAll()
+                        .requestMatchers("/api/personalities/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
