@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/board/**").permitAll()
                         .requestMatchers("/api/animals/**").permitAll()
                         .requestMatchers("/api/personalities/**").permitAll()
+                        .requestMatchers("/api/orders/**").permitAll()
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

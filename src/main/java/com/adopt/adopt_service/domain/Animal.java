@@ -72,6 +72,10 @@ public class Animal {
     private List<AnimalImage> images = new ArrayList<>();
 
     @Builder.Default
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<AnimalOrder> orders = new ArrayList<>();
+
+    @Builder.Default
     @ManyToMany
     @JoinTable(
         name="animal_personality",

@@ -56,7 +56,10 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade= CascadeType.ALL)
     private List<Animal> animals = new ArrayList<>();
-    
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade= CascadeType.ALL)
+    private List<AnimalOrder> orders = new ArrayList<>();
 
     public User(String email, String pw, String name, String pn, int age, String addr, String role) {
         this.email = email;
