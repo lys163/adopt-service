@@ -12,9 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.adopt.adopt_service.domain.AdoptState;
 import com.adopt.adopt_service.domain.Animal;
 import com.adopt.adopt_service.domain.AnimalDetail;
 import com.adopt.adopt_service.domain.AnimalImage;
+import com.adopt.adopt_service.domain.AnimalState;
 import com.adopt.adopt_service.domain.Personality;
 import com.adopt.adopt_service.domain.User;
 import com.adopt.adopt_service.dto.AnimalRegisterRequest;
@@ -48,6 +50,9 @@ public class AnimalService {
                 .imageUrl(blob)
                 .build())
             .toList();
+        AnimalState animalState = AnimalState.builder()
+            .adoptState(AdoptState.NOT_ADOPTED)
+            .build();
         
         Set<Personality> personalities = request.personalityNames().stream()
             .map(name -> PersonalityRepository.findByName(name)
@@ -70,8 +75,10 @@ public class AnimalService {
             .animalDetail(detail)
             .images(images)
             .personalities(personalities)
+            .animalState(animalState)
             .build();
 
+        animalState.setAnimal(animal);
         detail.setAnimal(animal);
         animal.setAnimalDetail(detail);
         images.forEach(img -> img.setAnimal(animal));
@@ -104,7 +111,9 @@ public class AnimalService {
             animal.getView(),
             animal.getLikes(),
             animal.getUser().getName(),
-            animal.getUser().getEmail()
+            animal.getUser().getEmail(),
+            animal.getAnimalState(),
+            animal.getUser().getUserId()
         );
     }
 
@@ -130,10 +139,42 @@ public class AnimalService {
                     animal.getView(),
                     animal.getLikes(),
                     animal.getUser().getName(),
-                    animal.getUser().getEmail()
+                    animal.getUser().getEmail(),
+                    animal.getAnimalState(),
+                    animal.getUser().getUserId()
                 );
             });
     }
+    public Page<AnimalResponse> getAnimalsByUserId(Long userId, Pageable pageable){
+        return animalRepository.findByUserUserId(userId, pageable)
+            .map(animal -> {
+                List<String> imageBase64s = animal.getImages().stream()
+                    .map(img -> Base64.getEncoder().encodeToString(img.getImageUrl()))
+                    .toList();
+        
+                List<String> personalities = animal.getPersonalities().stream()
+                    .map(Personality::getName)
+                    .toList();
+                return new AnimalResponse(
+                    animal.getAnimalId(),
+                    animal.getName(),
+                    animal.getAge(),
+                    animal.getKg(),
+                    animal.getSize(),
+                    animal.getType(),
+                    animal.getAnimalDetail().getDescription(),
+                    personalities,
+                    imageBase64s,
+                    animal.getView(),
+                    animal.getLikes(),
+                    animal.getUser().getName(),
+                    animal.getUser().getEmail(),
+                    animal.getAnimalState(),
+                    animal.getUser().getUserId()
+                );
+            });
+    }
+
     @Transactional
     public void deleteAnimal(Long animalId){
         Animal animal = animalRepository.findById(animalId)

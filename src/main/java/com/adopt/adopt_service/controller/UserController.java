@@ -53,7 +53,7 @@ public class UserController {
             
     // Optional로 반환하여, 사용자가 존재하는지 확인
         return userRepository.findByemail(email)
-            .<ResponseEntity<Object>>map(user -> ResponseEntity.ok(new UserResponse(user.getEmail(), user.getName(),user.getPn(),user.getAge(),user.getAddr(), user.getRole())))
+            .<ResponseEntity<Object>>map(user -> ResponseEntity.ok(new UserResponse(user.getUserId(),user.getEmail(), user.getName(),user.getPn(),user.getAge(),user.getAddr(), user.getRole())))
             .orElseGet(() -> ResponseEntity.status(404).body("사용자 없음"));
     }
 

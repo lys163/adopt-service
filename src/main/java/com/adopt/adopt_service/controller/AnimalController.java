@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import java.net.http.HttpRequest;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -41,15 +43,33 @@ public class AnimalController {
         animalService.registerAnimal(request, eamil);
         return ResponseEntity.status(HttpStatus.CREATED).body("생성 성공");
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<AnimalResponse> getAnimalDetail(@PathVariable Long id) {
+    public ResponseEntity<AnimalResponse> getAnimalDetail(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @PathVariable Long id
+        ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("animalId").descending());
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getAnimalDetail(id));
     }
+
     @GetMapping
-    public ResponseEntity<Page<AnimalResponse>> getAnimals(Pageable pageable) {
+    public ResponseEntity<Page<AnimalResponse>> getAnimals(
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("animalId").descending());
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getAnimals(pageable));
     }
     
+    @GetMapping("/user/{userId}")
+        public ResponseEntity<Page<AnimalResponse>> getAnimalsByUserId(@PathVariable Long userId,
+                                                                @RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("animalId").descending());
+    return ResponseEntity.ok(animalService.getAnimalsByUserId(userId, pageable));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnimal(@PathVariable Long id){
         animalService.deleteAnimal(id);

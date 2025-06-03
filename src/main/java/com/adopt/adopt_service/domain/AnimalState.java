@@ -1,5 +1,7 @@
 package com.adopt.adopt_service.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,45 +10,33 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@Builder
-@Table(name = "animal_order")
-@NoArgsConstructor
+@Setter
+@Table(name="animal_state")
 @AllArgsConstructor
-public class AnimalOrder {
-    
+@NoArgsConstructor
+@Builder
+public class AnimalState {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long animalStateId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "animal_id")
+    @JsonIgnore
     private Animal animal;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    private String orderDate;
-
-    @Column(name="order_status")
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private OrderStatus orderStatus = OrderStatus.PENDING;
-
-    public void accept() {
-        this.orderStatus = OrderStatus.ACCEPTED;
-    }
-
-    public void reject() {
-        this.orderStatus = OrderStatus.REJECTED;
-    }
+    @Column(nullable = false)
+    private AdoptState adoptState;
 }

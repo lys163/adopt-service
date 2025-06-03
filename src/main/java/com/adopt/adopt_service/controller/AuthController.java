@@ -89,5 +89,4 @@ public class AuthController {
     }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인되지 않음");
     }
-
 }

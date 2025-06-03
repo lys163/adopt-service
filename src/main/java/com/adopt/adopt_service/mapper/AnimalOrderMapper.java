@@ -22,6 +22,7 @@ public class AnimalOrderMapper {
         Animal animal = order.getAnimal();
 
         UserResponse userDto = new UserResponse(
+            user.getUserId(),
             user.getEmail(),
             user.getName(),
             user.getPn(),
@@ -51,7 +52,9 @@ public class AnimalOrderMapper {
             animal.getView(),
             animal.getLikes(),
             animal.getUser().getName(),
-            animal.getUser().getEmail()
+            animal.getUser().getEmail(),
+            animal.getAnimalState(),
+            animal.getUser().getUserId()
         );
         return new AnimalOrderResponse(
             order.getOrderId(),

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -132,5 +133,13 @@ public class AnimalOrderController {
                 return ResponseEntity.noContent().build();
             })
             .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("주문을 찾을 수 없습니다."));
+    }
+
+    @PatchMapping("/{orderId}/accept")
+    public ResponseEntity<Void> acceptOrder(
+            @PathVariable Long orderId
+    ) {
+        animalOrderService.acceptOrder(orderId);
+        return ResponseEntity.ok().build();
     }
 }

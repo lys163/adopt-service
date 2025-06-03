@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,6 +65,10 @@ public class Animal {
     private int likes;
 
     private String createTime;
+
+    @OneToOne(mappedBy="animal", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private AnimalState animalState;
 
     @OneToOne(mappedBy="animal", cascade=CascadeType.ALL)
     private AnimalDetail animalDetail;

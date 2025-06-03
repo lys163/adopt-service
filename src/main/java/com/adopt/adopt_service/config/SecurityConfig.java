@@ -35,7 +35,7 @@ public class SecurityConfig {
                         CorsConfiguration config = new CorsConfiguration();
                         config.addAllowedOrigin("http://localhost:5173");
                         config.addAllowedOrigin("http://localhost:8080");
-                        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        config.setAllowedMethods(List.of("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
                         config.setAllowCredentials(true);
                         return config;
                     };
