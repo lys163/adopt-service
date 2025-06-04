@@ -45,12 +45,7 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnimalResponse> getAnimalDetail(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @PathVariable Long id
-        ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("animalId").descending());
+    public ResponseEntity<AnimalResponse> getAnimalDetail(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(animalService.getAnimalDetail(id));
     }
 
