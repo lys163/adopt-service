@@ -9,8 +9,6 @@ import com.adopt.adopt_service.service.AnimalService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.net.http.HttpRequest;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +37,8 @@ public class AnimalController {
         if (authentication == null || !authentication.isAuthenticated()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
         }
-        String eamil = authentication.getName();
-        animalService.registerAnimal(request, eamil);
+        String email = authentication.getName();
+        animalService.registerAnimal(request, email);
         return ResponseEntity.status(HttpStatus.CREATED).body("생성 성공");
     }
 
