@@ -74,6 +74,25 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok("회원가입 성공");
     }
+
+    @PostMapping("/adminregister")
+    public ResponseEntity<?> adminRegister(@RequestBody RegisterRequest request) {
+        if(userRepository.findByemail(request.email()).isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 이메일입니다.");
+        }
+        User user=new User(
+        request.email(),
+        passwordEncoder.encode(request.pw()),
+        request.name(),
+        request.pn(),
+        request.age(),
+        request.addr(),
+        "ROLE_ADMIN"
+        );
+        userRepository.save(user);
+        return ResponseEntity.ok("회원가입 성공");
+    }
+    
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
