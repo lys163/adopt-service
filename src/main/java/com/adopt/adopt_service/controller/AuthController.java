@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -92,7 +93,7 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok("회원가입 성공");
     }
-    
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -108,4 +109,5 @@ public class AuthController {
     }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인되지 않음");
     }
+    
 }
