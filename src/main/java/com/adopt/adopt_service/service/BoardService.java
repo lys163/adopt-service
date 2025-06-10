@@ -53,4 +53,9 @@ public class BoardService {
                 .orElseThrow(()->new RuntimeException("게시글 없음"));
         boardRepository.delete(board);
     }
+    
+    public Page<BoardResponse> getUserBoards(Long userId, Pageable pageable) {
+        return boardRepository.findByUser_userId(userId, pageable)
+                .map(BoardResponse::from);
+    }
 }

@@ -15,5 +15,5 @@ import com.adopt.adopt_service.domain.Board;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>{
-    
+    Page<Board> findByUser_userId(Long userId,Pageable pageable);
 }

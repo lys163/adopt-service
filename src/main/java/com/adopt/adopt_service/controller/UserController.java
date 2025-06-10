@@ -3,7 +3,13 @@ package com.adopt.adopt_service.controller;
 
 
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.Authentication;
@@ -12,12 +18,16 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
 
+import com.adopt.adopt_service.dto.BoardResponse;
 import com.adopt.adopt_service.dto.RegisterRequest;
 import com.adopt.adopt_service.dto.UpdateUserRequest;
 import com.adopt.adopt_service.dto.UserResponse;
 import com.adopt.adopt_service.repository.UserRepository;
+import com.adopt.adopt_service.service.BoardService;
 import com.adopt.adopt_service.service.CustomUserDetails;
 import com.adopt.adopt_service.service.CustomUserDetailsService;
 import com.adopt.adopt_service.service.UserService;
@@ -39,6 +49,9 @@ public class UserController {
     private final UserRepository userRepository;
 
     private final UserService userService;
+
+    private final BoardService boardService;
+
     private final CustomUserDetailsService customUserDetailsService;
     
 
@@ -89,5 +102,21 @@ public class UserController {
         userService.updateUser(userId,request);
 
         return ResponseEntity.status(200).body("업데이트 됨");
+    }
+    @GetMapping("/boards")
+    public ResponseEntity<?> getUserBoards(
+        Authentication authentication,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        if (authentication == null || !authentication.isAuthenticated()){
+            return ResponseEntity.status(401).body(Map.of("error", "로그인 필요"));
+        }
+        String email = authentication.getName();
+        CustomUserDetails ud = (CustomUserDetails)customUserDetailsService.loadUserByUsername(email);
+        Long userId = ud.getUserId();
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by("boardId").descending());
+        Page<BoardResponse> userBoards = boardService.getUserBoards(userId, pageable);
+        return ResponseEntity.status(200).body(userBoards);
     }
 }
