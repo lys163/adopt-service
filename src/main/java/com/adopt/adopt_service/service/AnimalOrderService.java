@@ -109,4 +109,8 @@ public class AnimalOrderService {
     public void deleteOrder(Long orderId){
         orderAnimalRepository.deleteById(orderId);
     }
+
+    public List<AnimalOrder> getOrderByAnimalId(Long animalId) {
+        return orderAnimalRepository.findByAnimalAnimalId(animalId);
+    }
 }

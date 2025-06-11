@@ -14,4 +14,5 @@ public interface OrderAnimalRepository extends JpaRepository<AnimalOrder,Long>{
     Page<AnimalOrder> findByUserUserId(Long userId,Pageable pageable);
     List<AnimalOrder> findByAnimalAnimalId(Long animalId);
     Page<AnimalOrder> findByAnimalUserUserId(Long userId, Pageable pageable);
+    
 } 

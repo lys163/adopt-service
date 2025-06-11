@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.adopt.adopt_service.domain.AnimalOrder;
 import com.adopt.adopt_service.domain.User;
 import com.adopt.adopt_service.dto.AnimalOrderResponse;
+import com.adopt.adopt_service.dto.AnimalOrderUserResponse;
 import com.adopt.adopt_service.mapper.AnimalOrderMapper;
 import com.adopt.adopt_service.repository.UserRepository;
 import com.adopt.adopt_service.service.AnimalOrderService;
@@ -141,5 +142,22 @@ public class AnimalOrderController {
     ) {
         animalOrderService.acceptOrder(orderId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{animalId}")
+    public ResponseEntity<?> getOrderByAnimal(@PathVariable Long animalId, Authentication authentication){
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        
+        String email = authentication.getName();
+        User user = userRepository.findByemail(email)
+            .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
+
+        List<AnimalOrder> orders = animalOrderService.getOrderByAnimal(animalId);
+        List<AnimalOrderUserResponse> responses = orders.stream()
+            .map(order -> new AnimalOrderUserResponse(order.getUser().getUserId()))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 }
