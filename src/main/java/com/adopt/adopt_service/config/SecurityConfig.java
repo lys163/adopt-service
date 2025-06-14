@@ -28,8 +28,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+        
                 .csrf(csrf -> csrf.disable())
-                
                 .cors(c->{
                     CorsConfigurationSource source = request->{
                         CorsConfiguration config = new CorsConfiguration();
@@ -37,6 +37,7 @@ public class SecurityConfig {
                         config.addAllowedOrigin("http://localhost:8080");
                         config.setAllowedMethods(List.of("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
                         config.setAllowCredentials(true);
+                        config.setAllowedHeaders(List.of("*"));
                         return config;
                     };
                     c.configurationSource(source);
@@ -54,7 +55,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-
+                
                 .httpBasic(httpBasic -> httpBasic.disable())
 
                 .formLogin(form->form.disable())
@@ -65,6 +66,7 @@ public class SecurityConfig {
                         response.setStatus(HttpServletResponse.SC_OK);
                     })
                 );
+                
         return http.build();
     }
     @Bean
